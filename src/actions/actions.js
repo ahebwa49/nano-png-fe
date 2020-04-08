@@ -4,7 +4,7 @@ export const COMPRESS = "COMPRESS";
 export const photoCompressFetch = formData => {
   return dispatch => {
     dispatch(compressImage());
-    return fetch("http://localhost:4000/api/photo", {
+    return fetch("https://backend.tinierpng.com/api/photo", {
       method: "POST",
       body: formData,
       credentials: "include"
