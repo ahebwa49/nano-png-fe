@@ -18,6 +18,9 @@ code {
   justify-content: center;
   align-content: center;
   margin-top: 100px;
+  width: 585px;
+  margin-left: auto;
+  margin-right: auto;
   /* border: 1px solid red; */
 }
 
@@ -43,9 +46,24 @@ code {
 
 .images {
   display: flex;
+  /* border: 1px solid green; */
   justify-content: center;
 }
 
 .image {
   display: flex;
+  margin-top: 20px;
+  /* border: 1px solid red; */
+}
+
+.imageName {
+  margin-right: 20px;
+}
+
+.compressing {
+  margin-right: 20px;
+}
+
+.finished {
+  margin-right: 20px;
 }

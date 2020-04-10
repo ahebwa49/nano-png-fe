@@ -68,13 +68,14 @@ class App extends React.Component {
         <div className="images">
           {this.state.photo && (
             <div className="image">
-              <div>{this.state.photo.name}</div>
-              {this.props.image.isCompressing && <div>compressing ...</div>}
-              {this.props.image.finished && <div>finished</div>}
+              <div className="imageName">{this.state.photo.name}</div>
+              {this.props.image.isCompressing && <div className="compressing">compressing ...</div>}
+              {this.props.image.finished && <div className="finished">finished</div>}
               {this.props.image.finished && (
                 <div
                   style={{ cursor: "pointer", textDecoration: "underline" }}
                   onClick={this.handleDownload}
+                  className="download"
                 >
                   Download
                 </div>
