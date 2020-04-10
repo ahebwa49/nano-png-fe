@@ -14,7 +14,7 @@ export const photoCompressFetch = formData => {
       })
       .then(data => {
         dispatch(addCompressed(data));
-        console.log(data);
+        // console.log(data);
       })
 
       .catch(error => {
@@ -32,7 +32,7 @@ export const photoDownloadFetch = data => {
       credentials: "include"
     })
       .then(response => {
-        console.log(response);
+        // console.log(response);
         if (response.ok) {
           window.open(`${response.url}`, `_self`);
         }

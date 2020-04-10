@@ -11,12 +11,9 @@ class App extends React.Component {
   }
 
   handlePhotoChange = e => {
-    this.setState(
-      {
-        photo: e.target.files[0]
-      },
-      () => console.log(this.state.photo)
-    );
+    this.setState({
+      photo: e.target.files[0]
+    });
   };
 
   handleSubmit = e => {
@@ -38,6 +35,21 @@ class App extends React.Component {
     this.props.photoDownloadFetch(filename);
   };
   render() {
+    const { photo } = this.state;
+    let { image } = this.props;
+
+    let sizeInkBs;
+    let newSizeInkBs;
+    // let percentageDecrease;
+
+    if (image.finished) {
+      newSizeInkBs = image.newFileSizeInBytes / 1000;
+    }
+
+    if (photo) {
+      sizeInkBs = photo.size / 1000;
+    }
+
     return (
       <div className="app">
         <form
@@ -69,8 +81,18 @@ class App extends React.Component {
           {this.state.photo && (
             <div className="image">
               <div className="imageName">{this.state.photo.name}</div>
-              {this.props.image.isCompressing && <div className="compressing">compressing ...</div>}
-              {this.props.image.finished && <div className="finished">finished</div>}
+              {this.state.photo && (
+                <div className="imageSize">{`${sizeInkBs} KB`}</div>
+              )}
+              {this.props.image.isCompressing && (
+                <div className="compressing">compressing ...</div>
+              )}
+              {this.props.image.finished && (
+                <div className="finished">finished</div>
+              )}
+              {this.props.image.finished && (
+                <div className="imageSize">{`${newSizeInkBs} KB`}</div>
+              )}
               {this.props.image.finished && (
                 <div
                   style={{ cursor: "pointer", textDecoration: "underline" }}
@@ -80,6 +102,9 @@ class App extends React.Component {
                   Download
                 </div>
               )}
+              {/* {this.props.image.finished && (
+                <div className="imageSize">{`${percentageDecrease} %`}</div>
+              )} */}
             </div>
           )}
         </div>
@@ -89,7 +114,7 @@ class App extends React.Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state.image);
+  // console.log(state.image);
   return {
     error: state.error,
     user: state.user,
