@@ -6,6 +6,7 @@ let newState;
 const defaultState = {
   isCompressing: false,
   finished: false,
+  filename: "",
   link: "",
   originalFileSizeInBytes: null,
   newFileSizeInBytes: null

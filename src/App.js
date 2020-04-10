@@ -1,7 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import { photoCompressFetch } from "./actions/actions";
+import { photoCompressFetch, photoDownloadFetch } from "./actions/actions";
 
 class App extends React.Component {
   constructor(props) {
@@ -31,6 +30,12 @@ class App extends React.Component {
     formData.append("avatar", this.state.photo);
 
     this.props.photoCompressFetch(formData);
+  };
+
+  handleDownload = e => {
+    const { filename } = this.props.image;
+    e.preventDefault();
+    this.props.photoDownloadFetch(filename);
   };
   render() {
     return (
@@ -67,13 +72,12 @@ class App extends React.Component {
               {this.props.image.isCompressing && <div>compressing ...</div>}
               {this.props.image.finished && <div>finished</div>}
               {this.props.image.finished && (
-                <a
-                  href={`${this.props.image.link}`}
-                  style={{ textDecoration: "underline" }}
-                  download
+                <div
+                  style={{ cursor: "pointer", textDecoration: "underline" }}
+                  onClick={this.handleDownload}
                 >
-                  <div>Download</div>
-                </a>
+                  Download
+                </div>
               )}
             </div>
           )}
@@ -95,8 +99,12 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
   photoCompressFetch: formData => {
     dispatch(photoCompressFetch(formData));
+  },
+  photoDownloadFetch: filename => {
+    dispatch(photoDownloadFetch(filename));
   }
 });
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps

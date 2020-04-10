@@ -23,6 +23,26 @@ export const photoCompressFetch = formData => {
   };
 };
 
+export const photoDownloadFetch = data => {
+  return dispatch => {
+    const filename = data;
+    console.log(filename);
+    return fetch(`https://backend.tinierpng.com/api/download/${filename}`, {
+      method: "GET",
+      credentials: "include"
+    })
+      .then(response => {
+        console.log(response);
+        if (response.ok) {
+          window.open(`${response.url}`, `_self`);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+};
+
 export const addCompressed = data => {
   return {
     type: ADD,
