@@ -52,6 +52,9 @@ class App extends React.Component {
     }
     return (
       <div className="app">
+        <h3 style={{ textAlign: "center" }}>
+          Add your .png or .jpg or jpeg files here!
+        </h3>
         <form
           className="form"
           onSubmit={this.handleSubmit}
