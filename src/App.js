@@ -40,16 +40,16 @@ class App extends React.Component {
 
     let sizeInkBs;
     let newSizeInkBs;
-    // let percentageDecrease;
-
-    if (image.finished) {
-      newSizeInkBs = image.newFileSizeInBytes / 1000;
-    }
+    let percentageDecrease;
 
     if (photo) {
       sizeInkBs = photo.size / 1000;
     }
 
+    if (image.finished) {
+      newSizeInkBs = image.newFileSizeInBytes / 1000;
+      percentageDecrease = Math.round(100 - (newSizeInkBs / sizeInkBs) * 100);
+    }
     return (
       <div className="app">
         <form
@@ -102,9 +102,9 @@ class App extends React.Component {
                   Download
                 </div>
               )}
-              {/* {this.props.image.finished && (
-                <div className="imageSize">{`${percentageDecrease} %`}</div>
-              )} */}
+              {this.props.image.finished && (
+                <div className="imageSize">{`-${percentageDecrease} %`}</div>
+              )}
             </div>
           )}
         </div>

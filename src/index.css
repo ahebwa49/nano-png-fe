@@ -40,7 +40,6 @@ code {
 .button-div {
   display: flex;
   /* border: 1px solid green; */
-  /* margin-top: 20px; */
   justify-content: center;
 }
 
@@ -72,4 +71,9 @@ code {
 .finished {
   margin-right: 20px;
   color: green;
+}
+
+.download {
+  margin-right: 20px;
+  /* color: green; */
 }
