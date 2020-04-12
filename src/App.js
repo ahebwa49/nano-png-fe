@@ -1,30 +1,42 @@
 import React from "react";
 import { connect } from "react-redux";
-import { photoCompressFetch, photoDownloadFetch } from "./actions/actions";
+import {
+  photoCompressFetch,
+  photoDownloadFetch,
+  uploadNewImage,
+  removeOldImage
+} from "./actions/actions";
+
+let id = 0;
+let newImage;
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      photo: null
-    };
+    this.state = {};
   }
 
-  handlePhotoChange = e => {
-    this.setState({
-      photo: e.target.files[0]
-    });
+  triggerInputFile = () => this.fileInput.click();
+  handlePhotoChange = async e => {
+    e.persist();
+    if (e.target.files.length === 1 && this.props.images.length === 0) {
+      newImage = e.target.files[0];
+      newImage.id = id++;
+      await this.props.uploadNewImage(newImage);
+      this.handleSubmit();
+    } else if (e.target.files.length === 1 && this.props.images.length > 0) {
+      await this.props.removeOldImage();
+      newImage = e.target.files[0];
+      newImage.id = id++;
+      await this.props.uploadNewImage(newImage);
+      this.handleSubmit();
+    }
   };
 
-  handleSubmit = e => {
-    e.preventDefault();
-    this.setState({
-      compressing: true
-    });
-
+  handleSubmit = () => {
     let formData = new FormData();
 
-    formData.append("avatar", this.state.photo);
+    formData.append("avatar", newImage);
 
     this.props.photoCompressFetch(formData);
   };
@@ -35,81 +47,73 @@ class App extends React.Component {
     this.props.photoDownloadFetch(filename);
   };
   render() {
-    const { photo } = this.state;
     let { image } = this.props;
 
-    let sizeInkBs;
+    let oldSizeInkBs;
     let newSizeInkBs;
     let percentageDecrease;
 
-    if (photo) {
-      sizeInkBs = photo.size / 1000;
-    }
-
     if (image.finished) {
+      oldSizeInkBs = image.originalFileSizeInBytes / 1000;
       newSizeInkBs = image.newFileSizeInBytes / 1000;
-      percentageDecrease = Math.round(100 - (newSizeInkBs / sizeInkBs) * 100);
+      percentageDecrease = Math.round(
+        100 - (newSizeInkBs / oldSizeInkBs) * 100
+      );
     }
     return (
       <div className="app">
-        <h3 style={{ textAlign: "center" }}>
-          Add your .png or .jpg or jpeg files here!
-        </h3>
-        <form
-          className="form"
-          onSubmit={this.handleSubmit}
-          encType="multipart/form-data"
-        >
-          <div className="form-group">
-            <label htmlFor="password" className="form-label">
-              Photo
-            </label>
-
+        <div className="upload-btn-wrapper">
+          <button className="upload-btn" onClick={this.triggerInputFile}>
             <input
+              accept="image/*"
               type="file"
-              id="photo"
-              name="photo"
+              ref={fileInput => (this.fileInput = fileInput)}
               onChange={this.handlePhotoChange}
-              required
+              multiple
             />
-            {/* <input type="file" name="gallery" multiple /> */}
-          </div>
-          <div className="button-div">
-            <button type="submit" className="form-button">
-              compress
-            </button>
-          </div>
-        </form>
-        <div className="images">
-          {this.state.photo && (
-            <div className="image">
-              <div className="imageName">{this.state.photo.name}</div>
-              {this.state.photo && (
-                <div className="imageSize">{`${sizeInkBs} KB`}</div>
-              )}
-              {this.props.image.isCompressing && (
-                <div className="compressing">compressing ...</div>
-              )}
-              {this.props.image.finished && (
-                <div className="finished">finished</div>
-              )}
-              {this.props.image.finished && (
-                <div className="imageSize">{`${newSizeInkBs} KB`}</div>
-              )}
-              {this.props.image.finished && (
-                <div
-                  style={{ cursor: "pointer", textDecoration: "underline" }}
-                  onClick={this.handleDownload}
-                  className="download"
-                >
-                  Download
-                </div>
-              )}
-              {this.props.image.finished && (
-                <div className="imageSize">{`-${percentageDecrease} %`}</div>
-              )}
+            <img src="static/img/upload.png" alt="" />
+            <div className="upload-btn-text">
+              <h2>Upload Image</h2>
+              <p>(.png .jpg .jpeg)</p>
             </div>
-          )}
+          </button>
+          <p>*No Sign Up Required</p>
+        </div>
+        <div className="images">
+          {this.props.images.map(image => {
+            let sizeInkBs;
+            sizeInkBs = image.size / 1000;
+
+            return (
+              <div className="image" key={image.id}>
+                <div className="imageName">{image.name}</div>
+
+                <div className="imageSize">{`${sizeInkBs} KB`}</div>
+
+                {this.props.image.isCompressing && (
+                  <div className="compressing">compressing ...</div>
+                )}
+                {this.props.image.finished && (
+                  <div className="finished">finished</div>
+                )}
+                {this.props.image.finished && (
+                  <div className="imageSize">{`${newSizeInkBs} KB`}</div>
+                )}
+                {this.props.image.finished && (
+                  <div
+                    style={{ cursor: "pointer", textDecoration: "underline" }}
+                    onClick={this.handleDownload}
+                    className="download"
+                  >
+                    Download
+                  </div>
+                )}
+                {this.props.image.finished && (
+                  <div className="imageSize">{`-${percentageDecrease} %`}</div>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
     );
@@ -117,11 +121,11 @@ class App extends React.Component {
 }
 
 const mapStateToProps = state => {
-  // console.log(state.image);
   return {
     error: state.error,
     user: state.user,
-    image: state.image
+    image: state.image,
+    images: state.images
   };
 };
 
@@ -131,6 +135,12 @@ const mapDispatchToProps = dispatch => ({
   },
   photoDownloadFetch: filename => {
     dispatch(photoDownloadFetch(filename));
+  },
+  uploadNewImage: image => {
+    dispatch(uploadNewImage(image));
+  },
+  removeOldImage: () => {
+    dispatch(removeOldImage());
   }
 });
 

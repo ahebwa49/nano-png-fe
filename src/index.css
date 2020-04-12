@@ -45,13 +45,15 @@ code {
 
 .images {
   display: flex;
-  /* border: 1px solid green; */
+  flex-direction: column;
   justify-content: center;
+  /* border: 1px solid red; */
 }
 
 .image {
   display: flex;
   margin-top: 20px;
+  justify-content: center;
   /* border: 1px solid red; */
 }
 
@@ -76,4 +78,77 @@ code {
 .download {
   margin-right: 20px;
   /* color: green; */
+}
+
+/* Upload button */
+
+.upload-btn-wrapper {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 36px;
+  width: 340px;
+  height: 110px;
+  display: block;
+  justify-content: center;
+  align-items: center;
+}
+
+.upload-btn-wrapper p {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  /* border: 1px solid blue; */
+}
+
+.upload-btn {
+  width: 340px;
+  height: 76px;
+  padding: 0px;
+  margin-left: auto;
+  margin-right: auto;
+  background: #52c3ca;
+  border-radius: 4px;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  outline: none;
+  cursor: pointer;
+}
+
+.upload-btn img {
+  width: 24px;
+  height: 25px;
+  margin-left: 26px;
+  margin-right: 30px;
+}
+
+.upload-btn input {
+  display: none;
+}
+
+.upload-btn-text {
+  display: block;
+  justify-content: center;
+  align-items: center;
+  margin-right: 44px;
+}
+
+.upload-btn h2 {
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: normal;
+  font-style: normal;
+  margin: 0px;
+}
+
+.upload-btn p {
+  color: #ffffff;
+  font-size: 18px;
+  margin-top: 0px;
+  font-weight: normal;
+  font-style: normal;
 }

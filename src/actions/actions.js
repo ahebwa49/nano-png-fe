@@ -1,5 +1,7 @@
 export const ADD = "ADD";
 export const COMPRESS = "COMPRESS";
+export const UPLOAD = "UPLOAD";
+export const REMOVE = "REMOVE";
 
 export const photoCompressFetch = formData => {
   return dispatch => {
@@ -26,7 +28,7 @@ export const photoCompressFetch = formData => {
 export const photoDownloadFetch = data => {
   return dispatch => {
     const filename = data;
-    console.log(filename);
+    // console.log(filename);
     return fetch(`https://backend.tinierpng.com/api/download/${filename}`, {
       method: "GET",
       credentials: "include"
@@ -43,6 +45,13 @@ export const photoDownloadFetch = data => {
   };
 };
 
+export const uploadNewImage = image => {
+  return {
+    type: UPLOAD,
+    image: image
+  };
+};
+
 export const addCompressed = data => {
   return {
     type: ADD,
@@ -53,5 +62,11 @@ export const addCompressed = data => {
 export const compressImage = () => {
   return {
     type: COMPRESS
+  };
+};
+
+export const removeOldImage = () => {
+  return {
+    type: REMOVE
   };
 };
