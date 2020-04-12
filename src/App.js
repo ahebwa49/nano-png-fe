@@ -109,7 +109,7 @@ class App extends React.Component {
                   </div>
                 )}
                 {this.props.image.finished && (
-                  <div className="imageSize">{`-${percentageDecrease} %`}</div>
+                  <div className="percentage">{`-${percentageDecrease} %`}</div>
                 )}
               </div>
             );

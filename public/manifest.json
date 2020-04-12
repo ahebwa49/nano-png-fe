@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Tinier PNG",
+  "name": "free image compression tool",
   "icons": [
     {
       "src": "favicon.ico",
